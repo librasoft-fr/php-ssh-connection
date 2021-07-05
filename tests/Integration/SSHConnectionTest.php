@@ -5,14 +5,17 @@ use PHPUnit\Framework\TestCase;
 
 final class SSHConnectionTest extends TestCase
 {
+    const PK = '/home/travis/.ssh/id_rsa';
+    const UN = 'travis';
+
     public function testUpload()
     {
         $connection = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
-            ->connect();
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
+            ->connectSftp();
 
         $remotePath =  __DIR__ . '/../fixtures/upload.txt';
         $localPath = __DIR__ . '/../fixtures/file.txt';
@@ -26,9 +29,9 @@ final class SSHConnectionTest extends TestCase
         $connection = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
-            ->connect();
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
+            ->connectSftp();
 
         $remotePath =  __DIR__ . '/../fixtures/file.txt';
         $localPath = __DIR__ . '/../fixtures/download.txt';
@@ -42,8 +45,8 @@ final class SSHConnectionTest extends TestCase
         $connection = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $command = $connection->run('echo "Hello world!"');
@@ -78,15 +81,15 @@ final class SSHConnectionTest extends TestCase
         $connection1 = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $connection2 = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $this->assertEquals(
@@ -100,15 +103,15 @@ final class SSHConnectionTest extends TestCase
         $connection1 = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $connection2 = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $this->assertEquals(
@@ -122,8 +125,8 @@ final class SSHConnectionTest extends TestCase
         $connection1 = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $connection2 = (new SSHConnection())
@@ -144,8 +147,8 @@ final class SSHConnectionTest extends TestCase
         $connection1 = (new SSHConnection())
             ->to('localhost')
             ->onPort(22)
-            ->as('travis')
-            ->withPrivateKey('/home/travis/.ssh/id_rsa')
+            ->as(self::UN)
+            ->withPrivateKey(self::PK)
             ->connect();
 
         $connection2 = (new SSHConnection())

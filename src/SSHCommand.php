@@ -2,19 +2,36 @@
 
 namespace DivineOmega\SSHConnection;
 
-use phpseclib\Net\SSH2;
-use RuntimeException;
+use phpseclib3\Net\SSH2;
 
+/**
+ * Class SSHCommand
+ * @package DivineOmega\SSHConnection
+ */
 class SSHCommand
 {
-    const EXECUTION_TIMEOUT_SECONDS = 30;
-    const STREAM_BYTES_PER_READ = 4096;
-
+    /**
+     * @var SSH2
+     */
     private $ssh;
+    /**
+     * @var string
+     */
     private $command;
+    /**
+     * @var
+     */
     private $output;
+    /**
+     * @var
+     */
     private $error;
 
+    /**
+     * SSHCommand constructor.
+     * @param SSH2 $ssh
+     * @param string $command
+     */
     public function __construct(SSH2 $ssh, string $command)
     {
         $this->ssh = $ssh;
@@ -23,6 +40,9 @@ class SSHCommand
         $this->execute();
     }
 
+    /**
+     *
+     */
     private function execute()
     {
         $this->ssh->enableQuietMode();
@@ -30,21 +50,33 @@ class SSHCommand
         $this->error = $this->ssh->getStdError();
     }
 
+    /**
+     * @return string
+     */
     public function getRawOutput(): string
     {
         return $this->output;
     }
 
+    /**
+     * @return string
+     */
     public function getRawError(): string
     {
         return $this->error;
     }
 
+    /**
+     * @return string
+     */
     public function getOutput(): string
     {
         return trim($this->getRawOutput());
     }
 
+    /**
+     * @return string
+     */
     public function getError(): string
     {
         return trim($this->getRawError());
