@@ -4,6 +4,7 @@ namespace DivineOmega\SSHConnection;
 
 use InvalidArgumentException;
 use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP;
 use phpseclib3\Net\SSH2;
 use RuntimeException;
@@ -158,6 +159,9 @@ class SSHConnection
 
         if ($this->privateKeyPath) {
             $key = PublicKeyLoader::load(file_get_contents($this->privateKeyPath));
+            if (!$key instanceof PrivateKey) {
+                throw new RuntimeException('Provided key must be private one not public.');
+            }
             $authenticated = $this->ssh->login($this->username, $key);
             if (!$authenticated) {
                 throw new RuntimeException('Error authenticating with public-private key pair.');
