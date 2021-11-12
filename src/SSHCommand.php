@@ -1,12 +1,12 @@
 <?php
 
-namespace DivineOmega\SSHConnection;
+namespace LibrasoftFr\SSHConnection;
 
 use phpseclib3\Net\SSH2;
 
 /**
  * Class SSHCommand
- * @package DivineOmega\SSHConnection
+ * @package librasoft-fr\SSHConnection
  */
 class SSHCommand
 {
