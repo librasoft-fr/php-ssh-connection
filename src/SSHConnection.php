@@ -1,6 +1,6 @@
 <?php
 
-namespace DivineOmega\SSHConnection;
+namespace LibrasoftFr\SSHConnection;
 
 use InvalidArgumentException;
 use phpseclib3\Crypt\PublicKeyLoader;
@@ -11,7 +11,7 @@ use RuntimeException;
 
 /**
  * Class SSHConnection
- * @package DivineOmega\SSHConnection
+ * @package librasoft-fr\SSHConnection
  */
 class SSHConnection
 {
