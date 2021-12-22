@@ -55,6 +55,10 @@ class SSHConnection
     /**
      * @var
      */
+    private $privateKey;
+    /**
+     * @var
+     */
     private $timeout;
     /**
      * @var bool
@@ -116,6 +120,16 @@ class SSHConnection
     }
 
     /**
+     * @param string $privateKey
+     * @return $this
+     */
+    public function withPrivateKeyFrom(string $privateKey): self
+    {
+        $this->privateKey = $privateKey;
+        return $this;
+    }
+
+    /**
      * @param int $timeout
      * @return $this
      */
@@ -138,8 +152,8 @@ class SSHConnection
             throw new InvalidArgumentException('Username not specified.');
         }
 
-        if (!$this->password && (!$this->privateKeyPath)) {
-            throw new InvalidArgumentException('No password or private key path specified.');
+        if (!$this->password && !$this->privateKeyPath && !$this->privateKey) {
+            throw new InvalidArgumentException('No password or private key path / string specified.');
         }
     }
 
@@ -157,8 +171,10 @@ class SSHConnection
         }
 
 
-        if ($this->privateKeyPath) {
-            $key = PublicKeyLoader::load(file_get_contents($this->privateKeyPath));
+        if ($this->privateKeyPath || $this->privateKey) {
+            $key = PublicKeyLoader::load(
+                $this->privateKeyPath ? file_get_contents($this->privateKeyPath) : $this->privateKey
+            );
             if (!$key instanceof PrivateKey) {
                 throw new RuntimeException('Provided key must be private one not public.');
             }
@@ -221,8 +237,10 @@ class SSHConnection
             throw new RuntimeException('Error connecting to server.');
         }
 
-        if ($this->privateKeyPath) {
-            $key = PublicKeyLoader::load(file_get_contents($this->privateKeyPath));
+        if ($this->privateKeyPath || $this->privateKey) {
+            $key = PublicKeyLoader::load(
+                $this->privateKeyPath ? file_get_contents($this->privateKeyPath) : $this->privateKey
+            );
             $authenticated = $this->sftp->login($this->username, $key);
             if (!$authenticated) {
                 throw new RuntimeException('Error authenticating with public-private key pair.');
